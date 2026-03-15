@@ -176,7 +176,8 @@ int main()
     ciclo = 1;
 
     printf("=== SIMULADOR CPU x86 - LISTA EN MEMORIA SIMULADA ===\n");
-    printf("Zona de lista en RAM : 0x0100 - 0x01FF\n");
+    printf("Zona de lista en RAM : 0x0100 - 0x07FF (max 447 elementos)\n");
+    printf("Programa principal inicia en 0x0800\n");
     printf("Handler interrupcion : 0x0A00\n\n");
     imprimir_encabezado();
 
