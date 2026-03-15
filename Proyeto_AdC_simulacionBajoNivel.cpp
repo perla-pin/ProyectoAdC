@@ -110,7 +110,7 @@ void DEC(int &dest)
     EIP++;
 }
 
-// JNZ: Salta si ZF == 0 (resultado anterior no fue cero)
+// JNZ: Salta si ZF == 0 (Si el resultado anterior no fue cero)
 void JNZ(int addr)
 {
     if (ZF == 0)
@@ -360,20 +360,19 @@ int main()
             // =============================================================
 
         case 0x0A00:
-            // Prologo: guarda el EBP del llamador en el stack
+            // Guarda el EBP del llamador en el stack
             PUSH(EBP);
             imprimir_fila(eip_actual, "PUSH EBP");
             break;
 
         case 0x0A01:
-            // Prologo: establece el nuevo marco de la funcion
+            // Establece el nuevo marco de la funcion
             MOV_REG(EBP, ESP);
             imprimir_fila(eip_actual, "MOV EBP, ESP");
             break;
 
         case 0x0A02:
             // INTERRUPCION: el periferico (teclado) entrega el dato a EAX
-            // Se corta la tabla para recibir entrada, luego se reimprimen headers
             printf("--------------------------------------------------------------------------\n");
             printf(">>> INTERRUPCION DE TECLADO >>> Ingrese un valor: ");
             cin >> EAX;
@@ -383,24 +382,25 @@ int main()
             break;
 
         case 0x0A03:
-            // Epilogo: destruye variables locales restaurando ESP al marco base
+            // Destruye variables locales restaurando ESP al marco base (Si existieran)
             MOV_REG(ESP, EBP);
             imprimir_fila(eip_actual, "MOV ESP, EBP");
             break;
 
         case 0x0A04:
-            // Epilogo: restaura el EBP del llamador desde el stack
+            // Restaura el EBP del llamador desde el stack
             EBP = POP_VAL();
             imprimir_fila(eip_actual, "POP EBP");
             break;
 
         case 0x0A05:
-            // Epilogo: saca la dir. de retorno del stack e inyecta en EIP
+            // Saca la dir. de retorno del stack e inyecta en EIP
             RET_OP();
             imprimir_fila(eip_actual, "RET");
             break;
 
         default:
+            // Validacion de EIP: si se sale del rango de instrucciones definido, se detiene la ejecucion
             printf("ERROR: Violacion de segmento. EIP=0x%04X fuera de control.\n", EIP);
             HLT_flag = true;
             break;
@@ -412,7 +412,6 @@ int main()
     printf("--------------------------------------------------------------------------\n");
     printf("=== EJECUCION FINALIZADA ===\n");
     printf("Resultado final en EAX = %d (0x%04X)\n", EAX, EAX);
-    printf("--- APAGANDO SISTEMA ---\n\n");
     system("pause");
     return 0;
 }
