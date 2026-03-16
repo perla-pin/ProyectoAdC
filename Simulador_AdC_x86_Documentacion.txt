@@ -158,11 +158,12 @@ El programa ejecuta instrucciones mediante el ciclo de instrucción:
     |                  epilogo MOV ESP,EBP / POP EBP / RET
     |  Resultado de la funcion siempre en EAX (convencion de llamada x86).
     |  ===========================================================================
-    |  0x0A00   | PUSH EBP             | ESP -= 4; RAM[ESP] = EBP.
+    |  0x0A00   | PUSH EBP             |  -> ESP -= 4; 
+    |           |                      |  -> RAM[ESP] = EBP.
     |           |                      | Guarda el Base Pointer del llamador en la pila.
     |           |                      | Sin este PUSH, al retornar EBP del llamador quedaria corrupto.
     |  --------------------------------------------------------------------------
-    |  0x0A01   | MOV EBP, ESP         | EBP = ESP. Ancla el marco de pila del handler.
+    |  0x0A01   | MOV EBP, ESP         |  -> EBP = ESP. Ancla el marco de pila del handler.
     |           |                      | Variables locales se referenciarian como [EBP-4], [EBP-8].
     |           |                      | Este handler no tiene locales, pero el prologo se respeta.
     |  --------------------------------------------------------------------------
@@ -174,11 +175,13 @@ El programa ejecuta instrucciones mediante el ciclo de instrucción:
     |  0x0A03   | MOV ESP, EBP         | ESP = EBP. Destruye variables locales (si existieran).
     |           |                      | Restaura ESP al punto de inicio del marco de pila.
     |  --------------------------------------------------------------------------
-    |  0x0A04   | POP EBP              | EBP = RAM[ESP]; ESP += 4.
+    |  0x0A04   | POP EBP              |  -> EBP = RAM[ESP];
+    |           |                      |  -> ESP += 4.
     |           |                      | Restaura el EBP del llamador desde la pila.
     |           |                      | El llamador (main) recupera su propio EBP intacto.
     |  --------------------------------------------------------------------------
-    |  0x0A05   | RET                  | EIP = RAM[ESP]; ESP += 4.
+    |  0x0A05   | RET                  |  -> EBP = RAM[ESP];
+    |           |                      |  -> ESP += 4.
     |           |                      | Saca la dir. de retorno del stack e inyecta en EIP.
     |           |                      | EIP vuelve a 0x0801, 0x0805 o 0x0810 segun quien llamo.
     |  --------------------------------------------------------------------------
