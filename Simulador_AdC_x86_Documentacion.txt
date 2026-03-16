@@ -39,3 +39,24 @@ El programa realiza tres operaciones fundamentales:
 
             return 0;
         }
+===============================================================================
+ARQUITECTURA SIMULADA
+===============================================================================
+
+El sistema simulado contiene los componentes principales de una
+arquitectura Von Neumann.
+
+Componentes principales:
+
+• CPU (Unidad Central de Procesamiento)
+• Memoria RAM
+• Registros del procesador
+• Stack (pila)
+• Unidad de Control
+• ALU (Unidad Aritmético Lógica)
+
+En esta arquitectura, tanto los datos como las instrucciones se
+almacenan en la misma memoria RAM. La CPU obtiene las instrucciones
+desde la memoria, las decodifica y posteriormente las ejecuta.
+
+Este proceso se conoce como el ciclo de instrucción.
