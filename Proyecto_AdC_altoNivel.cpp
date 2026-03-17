@@ -1,35 +1,54 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
 
-int lista[256];
+char lista[256][16];
+int total = 0;
 
-int interrupcion_teclado() {
-    int dato;
-    cin >> dato;
-    return dato;
+void interrupcion_teclado(char *buffer)
+{
+    cin.getline(buffer, 16);
 }
 
-int main() {
-    int n;
-    cout << "Cuantos elementos? ";
-    n = interrupcion_teclado();
+int main()
+{
+    char pendiente[16];
+    char entrada[16];
+    memset(pendiente, 0, sizeof(pendiente));
 
-    for (int i = 0; i < n; i++) {
-        cout << "Dato [" << i + 1 << "]: ";
-        lista[i] = interrupcion_teclado();
+    cout << "COMANDOS: '@'=guardar  '#'=leer  '$'=mostrar todo  '!'=salir\n\n";
+
+    while (true)
+    {
+        cout << ">>> ";
+        interrupcion_teclado(entrada);
+
+        if (strcmp(entrada, "@") == 0)
+        {
+            strcpy(lista[total], pendiente);
+            total++;
+            memset(pendiente, 0, sizeof(pendiente));
+        }
+        else if (strcmp(entrada, "#") == 0)
+        {
+            int idx = atoi(pendiente);
+            cout << "lista[" << idx << "] = \"" << lista[idx] << "\"\n";
+        }
+        else if (strcmp(entrada, "$") == 0)
+        {
+            for (int i = 0; i < total; i++)
+                cout << "lista[" << i << "] = \"" << lista[i] << "\"\n";
+        }
+        else if (strcmp(entrada, "!") == 0)
+        {
+            break;
+        }
+        else
+        {
+            strcpy(pendiente, entrada);
+        }
     }
-
-    cout << "\nLista completa:\n";
-    for (int i = 0; i < n; i++) {
-        cout << "[" << i << "] = " << lista[i] << "\n";
-    }
-
-    int idx;
-    cout << "\nQue indice consultar? ";
-    idx = interrupcion_teclado();
-    cout << "Valor en [" << idx << "] = " << lista[idx] << "\n";
 
     system("pause");
-
     return 0;
 }
